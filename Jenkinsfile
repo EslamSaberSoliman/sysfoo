@@ -30,23 +30,43 @@ pipeline {
     }
 
     stage('Package') {
-      agent {
-        docker {
-          image 'maven:3.9.6-eclipse-temurin-17-alpine'
-          args '-v $HOME/.m2:/root/.m2'
-        }
+      parallel {
+        stage('Package') {
+          agent {
+            docker {
+              image 'maven:3.9.6-eclipse-temurin-17-alpine'
+              args '-v $HOME/.m2:/root/.m2'
+            }
 
-      }
-      steps {
-        echo 'Packaging the application....'
-        sh 'mvn package -DskipTests'
-        sh '''# Truncate the GIT_COMMIT to the first 7 characters
+          }
+          steps {
+            echo 'Packaging the application....'
+            sh 'mvn package -DskipTests'
+            sh '''# Truncate the GIT_COMMIT to the first 7 characters
 GIT_SHORT_COMMIT=$(echo $GIT_COMMIT | cut -c 1-7)
 
 # Set the version using Maven
 mvn versions:set -DnewVersion="$GIT_SHORT_COMMIT"
 mvn versions:commit'''
-        archiveArtifacts '**/target/*.jar'
+            archiveArtifacts '**/target/*.jar'
+          }
+        }
+
+        stage('Docker B&P') {
+          steps {
+            script {
+              docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
+                def commitHash = env.GIT_COMMIT.take(7)
+                def dockerImage = docker.build("eslamzaineldeen/sysfoo:${commitHash}", "./")
+                dockerImage.push()
+                dockerImage.push("latest")
+                dockerImage.push("dev")
+              }
+            }
+
+          }
+        }
+
       }
     }
 
