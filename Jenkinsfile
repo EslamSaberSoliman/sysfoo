@@ -30,11 +30,13 @@ pipeline {
     }
 
     stage('Package') {
-      when {
-            branch 'main'
-        }
       parallel {
         stage('Package') {
+            when {
+    expression {
+      env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master'
+      }
+  }
           agent {
             docker {
               image 'maven:3.9.6-eclipse-temurin-17-alpine'
@@ -57,6 +59,11 @@ mvn versions:commit'''
 
         stage('Docker B&P') {
           agent any
+           when {
+    expression {
+      env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master'
+      }
+  }
           steps {
             script {
               docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
