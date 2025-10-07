@@ -30,6 +30,9 @@ pipeline {
     }
 
     stage('Package') {
+      when {
+            branch 'main'
+        }
       parallel {
         stage('Package') {
           agent {
