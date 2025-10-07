@@ -5,6 +5,7 @@ pipeline {
       agent {
         docker {
           image 'maven:3.9.11-eclipse-temurin-21-alpine'
+          args '-u root'
         }
 
       }
@@ -18,6 +19,8 @@ pipeline {
       agent {
         docker {
           image 'maven:3.9.11-eclipse-temurin-21-alpine'
+          args '-u root'
+
         }
 
       }
@@ -31,6 +34,7 @@ pipeline {
       agent {
         docker {
           image 'maven:3.9.11-eclipse-temurin-21-alpine'
+          args '-u root'
         }
 
       }
