@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-          args '-u root'
+          args '-v $HOME/.m2:/root/.m2'
           image 'maven:3.9.6-eclipse-temurin-17-alpine'
         }
 
@@ -18,7 +18,7 @@ pipeline {
     stage('Test') {
       agent {
         docker {
-          args '-u root'
+          args '-v $HOME/.m2:/root/.m2'
           image 'maven:3.9.6-eclipse-temurin-17-alpine'
         }
 
@@ -32,7 +32,7 @@ pipeline {
     stage('Package') {
       agent {
         docker {
-          args '-u root'
+          args '-v $HOME/.m2:/root/.m2'
           image 'maven:3.9.6-eclipse-temurin-17-alpine'
         }
 
