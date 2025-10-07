@@ -4,8 +4,7 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-         
-          image '3.9-eclipse-temurin-21-alpine'
+          image 'maven:3.9-eclipse-temurin-21-alpine'
         }
 
       }
@@ -18,8 +17,7 @@ pipeline {
     stage('Test') {
       agent {
         docker {
-         
-          image '3.9-eclipse-temurin-21-alpine'
+          image 'maven:3.9-eclipse-temurin-21-alpine'
         }
 
       }
@@ -32,7 +30,7 @@ pipeline {
     stage('Package') {
       agent {
         docker {
-          image '3.9-eclipse-temurin-21-alpine'
+          image 'maven:3.9-eclipse-temurin-21-alpine'
         }
 
       }
