@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       agent {
         docker {
-          image 'maven:3.9.11-eclipse-temurin-21-alpine '
+          image 'maven:3.9.11-eclipse-temurin-21-alpine'
         }
 
       }
