@@ -59,11 +59,6 @@ mvn versions:commit'''
 
         stage('Docker B&P') {
           agent any
-           when {
-    expression {
-      env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master'
-      }
-  }
           steps {
             script {
               docker.withRegistry('https://index.docker.io/v1/', 'dockerlogin') {
