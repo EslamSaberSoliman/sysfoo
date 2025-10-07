@@ -30,13 +30,13 @@ pipeline {
     }
 
     stage('Package') {
-      parallel {
-        stage('Package') {
-            when {
+              when {
     expression {
-      env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master'
+      env.BRANCH_NAME == 'main'
       }
   }
+      parallel {
+        stage('Package') {
           agent {
             docker {
               image 'maven:3.9.6-eclipse-temurin-17-alpine'
